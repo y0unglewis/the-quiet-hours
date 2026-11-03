@@ -17,12 +17,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ ! -f .source-bundle.b64 ]; then
+          if [ ! -f .source-bundle.ready ]; then
             echo "No source bundle yet; nothing to import."
             exit 0
           fi
-          base64 --decode .source-bundle.b64 | tar -xz
-          rm .source-bundle.b64
+          cat .source-bundle.part* | base64 --decode | tar -xz
+          rm .source-bundle.ready .source-bundle.part*
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
